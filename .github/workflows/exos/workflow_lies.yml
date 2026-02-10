@@ -1,0 +1,66 @@
+name: Workflow liés
+
+on:
+  # Déclenchement manuel
+
+  workflow_dispatch:
+
+jobs:
+  job_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Message du premier job"
+        run: echo "Le premier job, lancé manuellement, est terminé."
+
+  job_2:
+    runs-on: ubuntu-latest
+    # Le job 2 ne se lance qu'après la réussite du job 1
+    needs: job_1
+    steps:
+      - name: "Message du second job"
+        run: echo "Le second job, dépendant du premier, s'est exécuté."
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+# workflow_lies.yml
+# name: Workflow liés Définit "Workflow liés" comme le nom du workflow qui sera affiché sur GitHub.
+
+# on: Indique que la section suivante définit l'événement qui déclenchera ce workflow.
+
+# workflow_dispatch: Permet de lancer ce workflow manuellement depuis l'onglet "Actions" de GitHub.
+
+# jobs: Déclare la liste des travaux (jobs) que le workflow doit exécuter.
+
+# job_1: Donne l'identifiant "job_1" au premier job de ce workflow.
+
+# runs-on: ubuntu-latest Indique que ce job doit s'exécuter sur un serveur virtuel utilisant la dernière version d'Ubuntu.
+
+# steps: Commence la liste des étapes à exécuter séquentiellement dans job_1.
+
+# - name: "Message du premier job" Donne un nom à cette étape pour l'identifier facilement dans les logs.
+
+# run: echo "Le premier workflow, lancé manuellement, est terminé." Exécute une commande qui affiche un message dans le log d'exécution.
+
+# job_2: Donne l'identifiant "job_2" au second job de ce workflow.
+
+# runs-on: ubuntu-latest Indique que ce second job s'exécutera aussi sur un serveur Ubuntu.
+
+# needs: job_1 Définit une dépendance : job_2 ne démarrera qu'après la réussite complète de job_1.
+
+# steps: Commence la liste des étapes à exécuter dans job_2.
+
+# - name: "Message du second workflow" Donne un nom à cette étape pour l'identifier dans les logs.
+
+# run: echo "Le second job, dépendant du premier, s'est exécuté." Exécute une commande qui affiche un message confirmant que le second job a bien tourné.

@@ -1,0 +1,58 @@
+name: Workflow Suivant
+
+on:
+  workflow_run:
+    # On cible le workflow précédent par son nom
+    workflows: ["Merge PR"]
+    types:
+      - completed
+
+jobs:
+  execution_apres_merge:
+    runs-on: ubuntu-latest
+    # On vérifie si le workflow précédent a réussi
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: "Message de suivi"
+        run: echo "Le workflow 'Merge PR' est terminé."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+        
+# La condition if: ${{ github.event.workflow_run.conclusion == 'success' }} est donc une porte de sécurité qui dit : "N'exécute ce job que si le workflow précédent a réussi".       
+
+#  Workflow Suivant Définit le nom du workflow qui sera affiché dans l'interface GitHub.
+
+# on: Indique que la section suivante définit les événements qui déclencheront ce workflow.
+
+# workflow_run: Spécifie que ce workflow dépend de l'exécution d'un autre workflow.
+
+# workflows: ["3.2 - Merge PR Workflow"] Cible précisément le workflow nommé "3.2 - Merge PR Workflow" comme déclencheur.
+
+# types: - completed Précise que ce workflow ne doit se déclencher que lorsque le workflow ciblé est totalement terminé.
+
+# jobs: Déclare la liste des travaux (jobs) à exécuter.
+
+# run_after_merge_workflow: Donne un identifiant unique à ce job.
+
+# runs-on: ubuntu-latest Indique que ce job doit s'exécuter sur un serveur virtuel utilisant la dernière version d'Ubuntu.
+
+# if: ${{ github.event.workflow_run.conclusion == 'success' }} Ajoute une condition cruciale : ce job ne s'exécutera que si le workflow précédent s'est terminé avec succès (pas d'échec).
+
+# steps: Commence la liste des étapes à exécuter séquentiellement dans ce job.
+
+# - name: "Message de suivi" Donne un nom à cette étape pour l'identifier dans les logs.
+
+# run: echo "Le workflow '3.2 - Merge PR Workflow' est terminé." Exécute la commande echo pour afficher un message de confirmation dans le terminal.

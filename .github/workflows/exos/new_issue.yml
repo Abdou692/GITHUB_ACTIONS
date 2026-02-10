@@ -1,0 +1,48 @@
+name: Nouvelle Issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  envoi_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Notifier la création d'issue"
+        run: echo "issue créée"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# name: Nouvelle Issue Définit "Nouvelle Issue" comme le nom du workflow qui sera affiché sur GitHub.
+
+# on: Indique que la section suivante définit les événements qui déclencheront ce workflow.
+
+# issues: Spécifie que le workflow doit réagir aux événements liés aux Issues (tickets).
+
+# types: [opened] Filtre l'événement pour que le workflow ne se lance que lorsqu'une Issue est créée (opened).
+
+# jobs: Déclare la liste des travaux (jobs) que le workflow doit exécuter.
+
+# send_message: Donne un identifiant unique à ce job.
+
+# runs-on: ubuntu-latest Indique que ce job doit s'exécuter sur un serveur virtuel utilisant la dernière version d'Ubuntu.
+
+# steps: Commence la liste des étapes à exécuter séquentiellement dans ce job.
+
+# - name: "Notifier la création d'issue" Donne un nom à cette étape pour qu'elle soit facilement identifiable dans les logs.
+
+# run: echo "issue créée" Exécute la commande echo pour afficher le message "issue créée" dans le log d'exécution.
