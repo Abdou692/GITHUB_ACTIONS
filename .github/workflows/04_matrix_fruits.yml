@@ -1,0 +1,57 @@
+name: Matrix Fruits
+
+on:
+  workflow_dispatch:
+
+jobs:
+  matrix_combinaison:
+    runs-on: ubuntu-latest
+    strategy:
+
+      # Arrête tous les jobs en cours si l'un d'eux échoue
+
+      fail-fast: true
+      matrix:
+        fruit: ["pomme", "banane", "orange", "fraise"]
+        name: ["Michel", "Jean", "Pierre"]
+        version: ["22.x"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3 # Il faudrait installer Node
+        with:
+          node-version: ${{ matrix.version }}
+      # Ces commandes nécessitent un fichier package.json et package-lock.json
+      # - run: npm ci
+      # - run: npm run build --if-present
+      # - run: npm test
+      - name: "Manger le fruit avec Node"
+        # On lance du code JS via node -e (eval)
+        run: node -e 'console.log("${{ matrix.name }} mange une ${{ matrix.fruit }}")'
+
+
+
+
+
+
+
+
+
+# Voici une explication ligne par ligne du fichier 04_matrix_fruits.yml :
+
+# name: 4 - Matrix Fruits Définit le nom du workflow tel qu'il apparaîtra dans l'interface de GitHub Actions.
+
+# on: Indique le début de la configuration des événements qui déclenchent ce workflow.
+
+# workflow_dispatch: Permet de lancer ce workflow manuellement via un bouton dans l'onglet "Actions" de GitHub.
+
+# jobs: Déclare la liste des travaux (jobs) que le workflow doit exécuter.
+
+# display_combination: Donne un identifiant unique à ce job spécifique (vous pouvez choisir le nom que vous voulez).
+
+# runs-on: ubuntu-latest Spécifie que ce job doit s'exécuter sur un serveur virtuel utilisant la dernière version d'Ubuntu.
+
+# strategy: Permet de définir une stratégie d'exécution complexe, ici pour générer plusieurs jobs à partir d'une matrice.
+
+# fail-fast: true Indique que si un seul job de la matrice échoue, tous les autres jobs en cours doivent être annulés immédiatement.
+
+# matrix: Définit les variables et leurs valeurs possibles pour créer toutes les combinaisons de jobs (ici 4 fruits x 3 noms = 12 jobs).
