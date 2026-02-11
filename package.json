@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "cpy-cli": "^7.0.0",
+    "rimraf": "^6.1.2"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && cpy \".github/workflows/src/dist/**/*.js\" dist --flat",
+    "start": "node dist/index.js"
+  }
+}

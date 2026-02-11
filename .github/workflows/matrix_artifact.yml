@@ -1,0 +1,84 @@
+# Nom du workflow
+name: CI/CD Pipeline
+
+# Événements déclencheurs
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  schedule:
+    # Tous les lundis à minuit (UTC)
+    - cron: '0 0 * * 1'
+
+jobs:
+  # Job de build avec matrice
+  build:
+    name: Build on Node ${{ matrix.node-version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # Limite le nombre de jobs exécutés en parallèle dans la matrice
+      max-parallel: 2
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [16, 18, 20]
+        # Exclure des combinaisons spécifiques
+        exclude:
+          - os: ubuntu-latest
+            node-version: 16
+          - os: windows-latest
+            node-version: 18
+          - os: macos-latest
+            node-version: 20
+        # Inclure une combinaison additionnelle
+        include:
+          - os: windows-latest
+            node-version: 22
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}-${{ matrix.node-version }}
+          path: dist/
+
+  # Job de déploiement conditionnel
+  deploy:
+    name: Simulate Deployment
+    needs: build
+    # Condition : s'exécute uniquement sur un push vers la branche 'main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact from Ubuntu + Node 18 build
+        uses: actions/download-artifact@v4
+        with:
+          # Le nom doit correspondre à l'artefact généré par la matrice
+          name: dist-ubuntu-latest-18
+          path: dist-downloaded
+
+      - name: Display structure of downloaded artifact
+        run: |
+          echo "Simulating deployment..."
+          echo "Contents of the downloaded artifact:"
+          ls -R dist-downloaded
