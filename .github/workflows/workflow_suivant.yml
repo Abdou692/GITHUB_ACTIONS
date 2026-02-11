@@ -3,7 +3,7 @@ name: Workflow Suivant
 on:
   workflow_run:
     # On cible le workflow précédent par son nom
-    workflows: ["Merge PR"]
+    workflows: [Merge PR]
     types:
       - completed
 
